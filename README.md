@@ -1,40 +1,53 @@
-# Software-Verification-Assignment
+# 📝 Project: Create New Account Validation
+**Lecture:** Software Verification and Validation  
+**Group:** Student A & Student B  
 
-Topic: Create New Account Page Testing
-Project Overview
-This project is for our 3rd-year Software Engineering class. Our goal is to act as Quality Engineers to test the "Create New Account" feature. We wrote a Java program that validates user inputs like Name, Email, and Password, and then we wrote automated tests to try and "break" the code before a real user does.
+---
 
-Group Members
-Student A: Logic Development and Equivalence Partitioning (EP) Tests.
+## 🚀 Overview
+This project focuses on testing the **"Submit"** feature of a registration page. We act as Quality Engineers to ensure the inputs are validated correctly and the system is robust against errors before it reaches the users.
 
-Student B: Automation (GitHub Actions) and Boundary Value Analysis (BVA) Tests.
+## 🛠️ Tech Stack
+* **Language:** Java 21 & 17
+* **Framework:** JUnit 5
+* **Build Tool:** Maven
+* **Automation:** GitHub Actions (CI/CD)
 
-How We Tested
-We used JUnit 5 to create 15 different test cases. We focused on two main techniques:
+---
 
-Equivalence Partitioning (EP): Grouping inputs into categories (like valid vs. invalid emails) to make sure each type of input is handled correctly.
+## 🧪 Testing Strategies
+We used two main techniques to reach our goal of **15+ test cases**:
 
-Boundary Value Analysis (BVA): Testing the "edges" of the rules, such as passwords that are exactly 8 characters long or names that are empty.
+### 1. Equivalence Partitioning (EP) - *Done by Student A*
+We divided inputs into groups to test different categories of behavior:
+* **Valid Inputs:** Testing "Happy Path" scenarios where all data is correct.
+* **Invalid Formats:** Testing emails without `@` or empty name fields.
+* **Logic Checks:** Ensuring the "Password" and "Confirm Password" fields match.
 
-Requirements Met
-Unit Testing: Created in Java using the JUnit 5 framework.
+### 2. Boundary Value Analysis (BVA) - *Done by Student B*
+We tested the "edges" of the input fields:
+* **Length Limits:** Testing passwords exactly at the minimum 8-character limit.
+* **Empty States:** Testing what happens when fields are left totally blank.
 
-Setup & Teardown: Used @BeforeEach to reset the system and @AfterEach to clean up after every test.
+---
 
-Assertions: Used assertEquals and assertTrue to verify if the results matched our expectations.
+## ⚙️ How to Run the Tests
+1. **Locally:** * Open the project in **IntelliJ IDEA**.
+   * Right-click the `src/test/java/AccountServiceTest.java` file.
+   * Select **Run 'AccountServiceTest'**.
+2. **Automatically:** * Every time we "Push" code to this repository, **GitHub Actions** runs the tests automatically. 
+   * You can see the results in the **[Actions]** tab above. ✅
 
-Automation: Integrated with GitHub Actions to run all tests automatically whenever we push new code.
+---
 
-How to Run the Code
-In an IDE: Open the project in IntelliJ IDEA as a Maven project. Navigate to src/test/java/AccountServiceTest.java, right-click, and select Run.
+## 🤝 Collaboration History
+To meet the project requirements, we used:
+* **Branching:** Working on separate tasks without breaking the main code.
+* **Pull Requests (PRs):** We reviewed each other's code and left comments before merging.
+* **Commit History:** A clear record of who added which test cases.
 
-On GitHub: Go to the Actions tab in this repository to see the history of automated test runs and results.
+---
 
-Features Validated
-First Name: Cannot be empty or just spaces.
-
-Email: Must contain an @ symbol and follow a valid format.
-
-Password: Must be at least 8 characters long.
-
-Confirm Password: Must match the original password exactly.
+### 👨‍💻 Group Members
+* **Student A:** System Logic & EP Tests
+* **Student B:** Automation & BVA Tests
