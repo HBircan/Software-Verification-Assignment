@@ -1,5 +1,5 @@
-import org.junit.jupiter.api.*; 
-import static org.junit.jupiter.api.Assertions.*; 
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountServiceTest {
 
@@ -7,83 +7,113 @@ public class AccountServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Requirement: Setup method
         service = new AccountService();
     }
 
     @AfterEach
     void tearDown() {
-        // Requirement: Tear-down method
         service = null;
     }
+
+    // --- STUDENT A: EQUIVALENCE PARTITIONING (EP) ---
 
     @Test
     @DisplayName("EP Test: Valid Submission")
     void testValidSubmission() {
-        String result = service.validateSubmission("John", "Doe", "test@mail.com",
-                "01/01/2000", "pass1234", "pass1234");
-        assertEquals("SUCCESS", result); // Requirement: Assertion
+        String result = service.validateSubmission("John", "Doe", "test@mail.com", "01/01/2000", "pass1234", "pass1234");
+        assertEquals("SUCCESS", result);
     }
 
     @Test
     @DisplayName("EP Test: Empty First Name")
     void testEmptyFirstName() {
-        String result = service.validateSubmission("", "Doe", "test@mail.com",
-                "01/01/2000", "pass1234", "pass1234");
+        String result = service.validateSubmission("", "Doe", "test@mail.com", "01/01/2000", "pass1234", "pass1234");
         assertEquals("First Name is required", result);
     }
 
     @Test
     @DisplayName("EP Test: Invalid Email Format")
     void testInvalidEmail() {
-        // CASE: Email missing the '@' symbol
-        String result = service.validateSubmission("John", "Doe", "invalid-email.com",
-                "01/01/2000", "pass1234", "pass1234");
+        String result = service.validateSubmission("John", "Doe", "invalid-email.com", "01/01/2000", "pass1234", "pass1234");
         assertEquals("Invalid Email Format", result);
     }
 
     @Test
     @DisplayName("EP Test: Passwords Do Not Match")
-    void testPasswordMismatch() {
-        // CASE: Password and Confirm Password are different
-        String result = service.validateSubmission("John", "Doe", "test@mail.com",
-                "01/01/2000", "password123", "different456");
+    void testPasswordMismatchEP() {
+        String result = service.validateSubmission("John", "Doe", "test@mail.com", "01/01/2000", "password123", "different456");
         assertEquals("Passwords do not match", result);
     }
 
     @Test
     @DisplayName("EP Test: Password Too Short")
-    void testPasswordTooShort() {
-        // CASE: Password length is less than 8 (e.g., 5 characters)
-        String result = service.validateSubmission("John", "Doe", "test@mail.com",
-                "01/01/2000", "short", "short");
+    void testPasswordTooShortEP() {
+        String result = service.validateSubmission("John", "Doe", "test@mail.com", "01/01/2000", "short", "short");
         assertEquals("Password too short", result);
     }
 
     @Test
     @DisplayName("EP Test: Null Email")
     void testNullEmail() {
-        // CASE: What if the email field is null?
-        String result = service.validateSubmission("John", "Doe", null,
-                "01/01/2000", "pass1234", "pass1234");
+        String result = service.validateSubmission("John", "Doe", null, "01/01/2000", "pass1234", "pass1234");
         assertEquals("Invalid Email Format", result);
     }
 
     @Test
     @DisplayName("EP Test: First Name is Only Spaces")
     void testFirstNameSpaces() {
-        // CASE: A user enters "   " instead of a name
-        String result = service.validateSubmission("   ", "Doe", "test@mail.com",
-                "01/01/2000", "pass1234", "pass1234");
+        String result = service.validateSubmission("   ", "Doe", "test@mail.com", "01/01/2000", "pass1234", "pass1234");
         assertEquals("First Name is required", result);
     }
 
     @Test
     @DisplayName("EP Test: Valid Submission with Different Email")
     void testAnotherValidSubmission() {
-        // CASE: Another valid "Happy Path" to ensure consistency
-        String result = service.validateSubmission("Jane", "Smith", "jane.smith@service.org",
-                "12/12/1995", "securePass99", "securePass99");
+        String result = service.validateSubmission("Jane", "Smith", "jane.smith@service.org", "12/12/1995", "securePass99", "securePass99");
         assertEquals("SUCCESS", result);
+    }
+
+    // --- STUDENT B: BOUNDARY VALUE ANALYSIS (BVA) ---
+
+    @Test
+    @DisplayName("BVA Test: Password Exactly 8 Chars")
+    void testPasswordExactlyEight() {
+        String result = service.validateSubmission("John", "Doe", "test@mail.com", "01/01/2000", "12345678", "12345678");
+        assertEquals("SUCCESS", result);
+    }
+
+    @Test
+    @DisplayName("BVA Test: Password 7 Chars")
+    void testPasswordSevenChars() {
+        String result = service.validateSubmission("John", "Doe", "test@mail.com", "01/01/2000", "1234567", "1234567");
+        assertEquals("Password too short", result);
+    }
+
+    @Test
+    @DisplayName("BVA Test: Name Empty")
+    void testNameEmpty() {
+        String result = service.validateSubmission("", "Doe", "test@mail.com", "01/01/2000", "pass1234", "pass1234");
+        assertEquals("First Name is required", result);
+    }
+
+    @Test
+    @DisplayName("BVA Test: Name One Char")
+    void testNameOnlyOneChar() {
+        String result = service.validateSubmission("A", "Doe", "test@mail.com", "01/01/2000", "pass1234", "pass1234");
+        assertEquals("SUCCESS", result);
+    }
+
+    @Test
+    @DisplayName("BVA Test: Wrong Confirm Password")
+    void testPasswordMismatchBVA() {
+        String result = service.validateSubmission("John", "Doe", "test@mail.com", "01/01/2000", "pass1234", "wrong999");
+        assertEquals("Passwords do not match", result);
+    }
+
+    @Test
+    @DisplayName("BVA Test: Missing @ in Email")
+    void testEmailWithoutAtSymbol() {
+        String result = service.validateSubmission("John", "Doe", "myemail.com", "01/01/2000", "pass1234", "pass1234");
+        assertEquals("Invalid Email Format", result);
     }
 }
